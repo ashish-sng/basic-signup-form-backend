@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
-app.get("/register", async (req, res) => {
+app.post("/register", async (req, res) => {
   try {
     const { firstName, lastName, email, username, password } = req.body;
 

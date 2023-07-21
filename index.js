@@ -37,6 +37,12 @@ app.get("/register", async (req, res) => {
       return res.status(409).json({ error: "User already exists" });
     }
 
+    // Check if a user with the same username already exists
+    const existingUserName = await User.findOne({ username });
+    if (existingUserName) {
+      return res.status(409).json({ error: "Username already exists" });
+    }
+
     // Hash the password using bcrypt
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -59,8 +65,6 @@ app.get("/register", async (req, res) => {
     });
     res.status(201).json({
       message: "User registered successfully",
-      name: user.firstName,
-      token,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
